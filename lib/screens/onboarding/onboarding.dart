@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:varzish/screens/onboarding/height_screen.dart';
 import 'package:varzish/screens/onboarding/plan_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:varzish/screens/onboarding/weight_screen.dart';
+import 'package:varzish/utils/screenConstraints.dart';
 
 class Onboarding extends StatefulWidget {
   @override
@@ -15,9 +17,6 @@ class _OnboardingState extends State<Onboarding> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
-      decoration: const BoxDecoration(
-          // color: Colors.red,
-          ),
       width: double.infinity,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -47,10 +46,12 @@ class _OnboardingState extends State<Onboarding> {
               ],
             ),
           ),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 60),
+          SizedBox(
+            // margin: const EdgeInsets.symmetric(vertical: 60),
             // child: PlanScreen(),
-            child: HeightScreen(),
+            height: ScreenSize.height(context) * 0.60,
+            child: WeightScreen(),
+            // child: HeightScreen(),
           ),
           Row(mainAxisAlignment: MainAxisAlignment.end, children: [
             ElevatedButton(

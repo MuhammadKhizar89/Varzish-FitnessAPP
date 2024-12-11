@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:varzish/utils/screenConstraints.dart';
+import 'package:varzish/widgets/heading.dart';
 
 class HeightScreen extends StatefulWidget {
   @override
@@ -17,17 +18,35 @@ class _HeightScreenState extends State<HeightScreen> {
     return heights;
   }
 
-  int _selectedIndex = 0;
   final FixedExtentScrollController _controller = FixedExtentScrollController();
-
   @override
   Widget build(BuildContext context) {
     List<String> heights = _generateHeights();
+    return Column(
+      children: [
+        const Heading(text: "Enter Your Height"),
+        const SizedBox(height: 20),
+        HeightWidget(heights: heights, controller: _controller)
+      ],
+    );
+  }
+}
+
+class HeightWidget extends StatelessWidget {
+  const HeightWidget({
+    super.key,
+    required this.heights,
+    required this.controller,
+  });
+  final List<String> heights;
+  final FixedExtentScrollController controller;
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
           flex: 4,
-          child: Container(
+          child: SizedBox(
             height: ScreenSize.height(context) * 0.50,
             child: CustomPaint(
               painter: LinePainter(),
@@ -61,35 +80,27 @@ class _HeightScreenState extends State<HeightScreen> {
                   ),
                 ),
                 ListWheelScrollView.useDelegate(
-                  controller: _controller,
+                  controller: controller,
                   diameterRatio: 100,
                   itemExtent: 50,
                   physics: const FixedExtentScrollPhysics(),
-                  onSelectedItemChanged: (index) {
-                    setState(() {
-                      _selectedIndex = index;
-                    });
-                    print("Selected index: $index");
-                  },
                   childDelegate: ListWheelChildBuilderDelegate(
                     builder: (context, index) {
                       return AnimatedBuilder(
-                        animation: _controller,
+                        animation: controller,
                         builder: (context, child) {
-                          print("Selected item: ${_controller.selectedItem}");
-                          print("Selected index: ${index}");
+                          // print("Selected item: ${_controller.selectedItem}");
                           double selectedIndex =
-                              _controller.selectedItem.toDouble();
+                              controller.selectedItem.toDouble();
                           double difference = (selectedIndex - index).abs();
-                          double scale = 1 - (difference * 0.1).clamp(0.0, 0.3);
+                          double scale = 1 - (difference * 0.1).clamp(0.0, 0.5);
                           double offset = (difference * 20).clamp(0.0, 40);
+                          // print(
+                          // " index: ${index} Selected index: ${selectedIndex} difference: ${difference} scale: ${scale} offset: ${offset}");
                           return TweenAnimationBuilder<double>(
                             tween: Tween(begin: 0, end: offset),
-                            duration: Duration(
-                                milliseconds:
-                                    300), // Smooth transition duration
-                            curve: Curves
-                                .easeInOut, // Easing curve for smooth effect
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
                             builder: (context, value, child) {
                               return Transform.translate(
                                 offset: Offset(value, 0),
@@ -97,13 +108,13 @@ class _HeightScreenState extends State<HeightScreen> {
                                   scale: scale,
                                   child: Center(
                                     child: Text(
-                                      heights[index], // Dynamic data
+                                      heights[index],
                                       style: TextStyle(
-                                        color: index == _controller.selectedItem
+                                        color: index == controller.selectedItem
                                             ? Color.fromARGB(255, 125, 216, 13)
                                             : Colors.grey,
                                         fontSize:
-                                            index == _controller.selectedItem
+                                            index == controller.selectedItem
                                                 ? 20
                                                 : 15,
                                         fontWeight: FontWeight.w500,
@@ -161,13 +172,13 @@ class LinePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..color = Color.fromARGB(255, 125, 216, 13) // Line color
-      ..strokeWidth = 2.0 // Line thickness
+      ..strokeWidth = 1.0 // Line thickness
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
     final p = Paint()
       ..color = Color.fromARGB(255, 125, 216, 13) // Line color
-      ..strokeWidth = 2.0 // Line thickness
+      ..strokeWidth = 1.0 // Line thickness
       ..style = PaintingStyle.stroke;
 
     // Drawing a line from the top-left to the bottom-right corner
@@ -186,25 +197,3 @@ class LinePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
-
-// how can i do that lines generated should be in height
-// and all will be space evenly according to geight but the center one will be more large in width then others
-// void paint(Canvas canvas, Size size) {
-//     print(size);
-//     final p = Paint()
-//       ..color = Color.fromARGB(255, 125, 216, 13) // Line color
-//       ..strokeWidth = 4.0 // Line thickness
-//       ..style = PaintingStyle.stroke;
-
-//     double gap = size.height / 7;
-//     double current = height;
-//     print(gap);
-//     for (int i = 0; i < gap; i++) {
-//       canvas.drawLine(
-//         Offset(0, current), // Starting point (x, y)
-//         Offset(size.width, current), // Ending point (x, y)
-//         p,
-//       );
-//       current += gap;
-//     }
-//   }
