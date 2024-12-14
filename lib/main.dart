@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:varzish/screens/onboarding/onboarding.dart';
-import 'package:varzish/screens/onboarding/test_animation.dart';
 
 var kColorScheme =
     ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 0, 255, 13));
@@ -34,7 +33,6 @@ void main() {
               ),
             ),
             Onboarding(),
-            // TestAnimation(),
           ],
         ),
       ),

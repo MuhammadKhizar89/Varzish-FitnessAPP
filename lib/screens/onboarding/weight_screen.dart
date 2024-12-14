@@ -8,6 +8,9 @@ class WeightScreen extends StatefulWidget {
 }
 
 class _WeightScreenState extends State<WeightScreen> {
+  final List<int> weightList = List.generate(101, (index) => index + 50);
+
+  final FixedExtentScrollController _controller = FixedExtentScrollController();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -23,19 +26,109 @@ class _WeightScreenState extends State<WeightScreen> {
               Expanded(
                 flex: 1,
                 child: Container(
-                  // color: Colors.red,
+                  padding: EdgeInsets.all(30),
                   width: ScreenSize.width(context), // Explicitly set width here
                   child: CustomPaint(
                     painter: LinePainter(),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          bottom: 0,
+                          left: ScreenSize.width(context) * 0.34 - 30,
+                          // left: ScreenSize.height(context) * 0.40,
+                          child: const Text(
+                            "My weight is",
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
               Expanded(
                 flex: 1,
                 child: Container(
-                  width: ScreenSize.width(context), // Explicitly set width here
-                  child: CustomPaint(
-                    painter: WeightPainter(),
+                  width: ScreenSize.width(context),
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: CustomPaint(
+                          painter: WeightPainter(),
+                        ),
+                      ),
+                      RotatedBox(
+                        quarterTurns: 3,
+                        child: ListWheelScrollView.useDelegate(
+                          itemExtent: 65,
+                          physics: const FixedExtentScrollPhysics(),
+                          diameterRatio: 100,
+                          controller: _controller,
+                          childDelegate: ListWheelChildBuilderDelegate(
+                            childCount: 100,
+                            builder: (context, index) {
+                              return AnimatedBuilder(
+                                animation: _controller,
+                                builder: (context, child) {
+                                  double selectedIndex =
+                                      _controller.selectedItem.toDouble();
+                                  double difference =
+                                      (selectedIndex - index).abs();
+                                  double offset =
+                                      (difference * 20).clamp(0.0, 20);
+                                  if (offset == 0) {
+                                    offset = -70;
+                                  }
+                                  return TweenAnimationBuilder<double>(
+                                    tween: Tween(begin: 0, end: offset),
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut,
+                                    builder: (context, value, child) {
+                                      double scale =
+                                          index == _controller.selectedItem
+                                              ? 2.5
+                                              : 0.8;
+                                      return Transform.translate(
+                                        offset: Offset(-value, 15),
+                                        child: Transform.scale(
+                                          scale: scale,
+                                          child: RotatedBox(
+                                            quarterTurns: 1,
+                                            child: Text(
+                                              index == _controller.selectedItem
+                                                  ? weightList[index]
+                                                          .toString() +
+                                                      " kg"
+                                                  : weightList[index]
+                                                      .toString(),
+                                              style: TextStyle(
+                                                color: index ==
+                                                        _controller.selectedItem
+                                                    ? Color.fromARGB(
+                                                        255, 125, 216, 13)
+                                                    : Colors.grey,
+                                                fontSize: index ==
+                                                        _controller.selectedItem
+                                                    ? 20
+                                                    : 15,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),
@@ -67,7 +160,7 @@ class LinePainter extends CustomPainter {
     );
     canvas.drawLine(
       Offset(size.width / 2, 0), // Starting point (x, y)
-      Offset(size.width / 2, size.height), // Ending point (x, y)
+      Offset(size.width / 2, size.height - 30), // Ending point (x, y)
       p,
     );
   }
