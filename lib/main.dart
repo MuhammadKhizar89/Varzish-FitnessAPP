@@ -12,30 +12,44 @@ void main() {
       ),
       title: "Varzish",
       home: Scaffold(
-        body: Stack(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [Colors.black, Colors.green],
-                    stops: [0.20, 1]),
-              ),
-            ),
-            Container(
-              decoration: const BoxDecoration(
-                gradient: RadialGradient(
-                  center: Alignment.center,
-                  radius: 0.5,
-                  colors: [Colors.transparent, Colors.black45],
-                ),
-              ),
-            ),
-            Onboarding(),
-          ],
-        ),
+        body: MyWidget(),
       ),
     ),
   );
+}
+
+class MyWidget extends StatefulWidget {
+  const MyWidget({super.key});
+
+  @override
+  State<MyWidget> createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Colors.black, Colors.green],
+                stops: [0.2, 1]),
+          ),
+        ),
+        Container(
+          decoration: const BoxDecoration(
+            gradient: RadialGradient(
+              center: Alignment.center,
+              radius: 0.5,
+              colors: [Colors.transparent, Colors.black45],
+            ),
+          ),
+        ),
+        Onboarding(),
+      ],
+    );
+  }
 }

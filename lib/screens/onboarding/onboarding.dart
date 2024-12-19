@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:varzish/screens/onboarding/age_screen.dart';
 import 'package:varzish/screens/onboarding/height_screen.dart';
 import 'package:varzish/screens/onboarding/plan_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -49,9 +50,10 @@ class _OnboardingState extends State<Onboarding> {
           SizedBox(
             // margin: const EdgeInsets.symmetric(vertical: 60),
             // child: PlanScreen(),
-            height: ScreenSize.height(context) * 0.60,
-            child: WeightScreen(),
+            // height: ScreenSize.height(context) * 0.60,
+            // child: WeightScreen(),
             // child: HeightScreen(),
+            child: AgeScreen(),
           ),
           Row(mainAxisAlignment: MainAxisAlignment.end, children: [
             ElevatedButton(
