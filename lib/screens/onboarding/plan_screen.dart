@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:varzish/utils/AppColors.dart';
 import 'package:varzish/utils/screenConstraints.dart';
 
 class PlanScreen extends StatefulWidget {
@@ -84,9 +85,8 @@ class _CustomButtonState extends State<CustomButton> {
           widget.setButtonState(widget.title);
         },
         style: OutlinedButton.styleFrom(
-          backgroundColor: widget.isClicked
-              ? const Color.fromARGB(255, 125, 216, 13)
-              : Colors.transparent,
+          backgroundColor:
+              widget.isClicked ? AppColors.primary : Colors.transparent,
           side: const BorderSide(
               color: Color.fromARGB(158, 73, 121, 15), width: 2),
           shape: RoundedRectangleBorder(
@@ -96,8 +96,8 @@ class _CustomButtonState extends State<CustomButton> {
         child: Text(
           widget.title,
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: widget.isClicked ? FontWeight.w700 : FontWeight.w400,
+          style: const TextStyle(
+            fontWeight: FontWeight.w400,
             fontSize: 21,
             color: Color.fromARGB(255, 255, 255, 255),
           ),

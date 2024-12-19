@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:varzish/utils/AppColors.dart';
 import 'package:varzish/utils/screenConstraints.dart';
 import 'package:varzish/widgets/heading.dart';
 
@@ -111,7 +112,7 @@ class HeightWidget extends StatelessWidget {
                                       heights[index],
                                       style: TextStyle(
                                         color: index == controller.selectedItem
-                                            ? Color.fromARGB(255, 125, 216, 13)
+                                            ? AppColors.secondary
                                             : Colors.grey,
                                         fontSize:
                                             index == controller.selectedItem
@@ -171,14 +172,14 @@ class LinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Color.fromARGB(255, 125, 216, 13) // Line color
-      ..strokeWidth = 1.0 // Line thickness
+      ..color = AppColors.primary // Line color
+      ..strokeWidth = 3.0 // Line thickness
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
     final p = Paint()
-      ..color = Color.fromARGB(255, 125, 216, 13) // Line color
-      ..strokeWidth = 1.0 // Line thickness
+      ..color = AppColors.primary // Line color
+      ..strokeWidth = 2.0 // Line thickness
       ..style = PaintingStyle.stroke;
 
     // Drawing a line from the top-left to the bottom-right corner

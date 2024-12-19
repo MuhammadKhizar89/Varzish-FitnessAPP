@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:varzish/utils/AppColors.dart';
 
 class CustomPicker extends StatefulWidget {
   CustomPicker({required this.data});
@@ -11,6 +12,14 @@ class CustomPicker extends StatefulWidget {
 
 class _CustomPickerState extends State<CustomPicker> {
   var selectedValue;
+  @override
+  void initState() {
+    setState(() {
+      selectedValue = 0;
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -31,7 +40,7 @@ class _CustomPickerState extends State<CustomPicker> {
               "${widget.data[index]}",
               style: TextStyle(
                   color: selectedValue == index
-                      ? Color.fromARGB(255, 195, 255, 120)
+                      ? AppColors.secondary
                       : Color.fromARGB(255, 166, 166, 166),
                   fontSize: 25,
                   fontWeight: FontWeight.w600),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:varzish/utils/AppColors.dart';
 
 class Heading extends StatelessWidget {
   const Heading({super.key, required this.text});
@@ -18,7 +19,7 @@ class Heading extends StatelessWidget {
         Container(
           height: 2,
           width: 200,
-          color: const Color.fromARGB(255, 125, 216, 13),
+          color: AppColors.primary,
         ),
       ],
     );
