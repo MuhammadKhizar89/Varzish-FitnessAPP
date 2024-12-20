@@ -3,17 +3,21 @@ import 'package:varzish/utils/AppColors.dart';
 import 'package:varzish/utils/screenConstraints.dart';
 
 class PlanScreen extends StatefulWidget {
-  const PlanScreen({super.key});
-
+  PlanScreen({
+    super.key,
+    required this.plan,
+    required this.setPlanState,
+  });
+  late final String plan;
+  final void Function(String plan) setPlanState;
   @override
   State<PlanScreen> createState() => _PlanScreenState();
 }
 
 class _PlanScreenState extends State<PlanScreen> {
-  String selectedButton = "Beginner";
   void setButtonState(String state) {
     setState(() {
-      selectedButton = state;
+      widget.setPlanState(state);
     });
   }
 
@@ -38,17 +42,17 @@ class _PlanScreenState extends State<PlanScreen> {
               children: [
                 CustomButton(
                   title: "Beginner",
-                  isClicked: selectedButton == "Beginner",
+                  isClicked: this.widget.plan == "Beginner",
                   setButtonState: setButtonState,
                 ),
                 CustomButton(
                   title: "Intermediate",
-                  isClicked: selectedButton == "Intermediate",
+                  isClicked: this.widget.plan == "Intermediate",
                   setButtonState: setButtonState,
                 ),
                 CustomButton(
                   title: "Advanced",
-                  isClicked: selectedButton == "Advanced",
+                  isClicked: this.widget.plan == "Advanced",
                   setButtonState: setButtonState,
                 )
               ],

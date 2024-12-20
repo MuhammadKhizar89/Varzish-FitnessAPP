@@ -4,6 +4,13 @@ import 'package:varzish/utils/screenConstraints.dart';
 import 'package:varzish/widgets/heading.dart';
 
 class WeightScreen extends StatefulWidget {
+  const WeightScreen({
+    super.key,
+    required this.weight,
+    required this.setWeightState,
+  });
+  final int weight;
+  final void Function(int weight) setWeightState;
   @override
   State<WeightScreen> createState() => _WeightScreenState();
 }
@@ -11,7 +18,15 @@ class WeightScreen extends StatefulWidget {
 class _WeightScreenState extends State<WeightScreen> {
   final List<int> weightList = List.generate(101, (index) => index + 50);
 
-  final FixedExtentScrollController _controller = FixedExtentScrollController();
+  late FixedExtentScrollController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    final int initialIndex = weightList.indexOf(widget.weight);
+    _controller = FixedExtentScrollController(initialItem: initialIndex);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -64,6 +79,9 @@ class _WeightScreenState extends State<WeightScreen> {
                       RotatedBox(
                         quarterTurns: 3,
                         child: ListWheelScrollView.useDelegate(
+                          onSelectedItemChanged: (value) {
+                            widget.setWeightState(weightList[value]);
+                          },
                           itemExtent: 65,
                           physics: const FixedExtentScrollPhysics(),
                           diameterRatio: 100,

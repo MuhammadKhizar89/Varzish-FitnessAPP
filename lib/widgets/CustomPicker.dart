@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:varzish/utils/AppColors.dart';
 
 class CustomPicker extends StatefulWidget {
-  CustomPicker({required this.data});
-  final List<Object> data;
+  CustomPicker({required this.data, required this.selectedData});
+
+  final ValueChanged<String> selectedData;
+  final List<String> data;
   @override
   State<CustomPicker> createState() {
     return _CustomPickerState();
@@ -14,10 +16,9 @@ class _CustomPickerState extends State<CustomPicker> {
   var selectedValue;
   @override
   void initState() {
-    setState(() {
-      selectedValue = 0;
-    });
     super.initState();
+    selectedValue = 0;
+    // widget.selectedData(widget.data[0]);
   }
 
   @override
@@ -32,6 +33,7 @@ class _CustomPickerState extends State<CustomPicker> {
           setState(() {
             selectedValue = value;
           });
+          widget.selectedData(widget.data[value]);
         },
         childDelegate: ListWheelChildBuilderDelegate(
           childCount: widget.data.length,

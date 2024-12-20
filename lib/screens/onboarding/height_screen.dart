@@ -4,6 +4,13 @@ import 'package:varzish/utils/screenConstraints.dart';
 import 'package:varzish/widgets/heading.dart';
 
 class HeightScreen extends StatefulWidget {
+  HeightScreen({
+    super.key,
+    required this.height,
+    required this.setHeightState,
+  });
+  late final String height;
+  final void Function(String height) setHeightState;
   @override
   State<HeightScreen> createState() => _HeightScreenState();
 }
@@ -27,20 +34,40 @@ class _HeightScreenState extends State<HeightScreen> {
       children: [
         const Heading(text: "Enter Your Height"),
         const SizedBox(height: 20),
-        HeightWidget(heights: heights, controller: _controller)
+        HeightWidget(
+            height: widget.height,
+            setHeightState: widget.setHeightState,
+            heights: heights,
+            controller: _controller)
       ],
     );
   }
 }
 
-class HeightWidget extends StatelessWidget {
-  const HeightWidget({
+class HeightWidget extends StatefulWidget {
+  HeightWidget({
     super.key,
+    required this.height,
     required this.heights,
     required this.controller,
+    required this.setHeightState,
   });
+  late final String height;
+  final void Function(String height) setHeightState;
   final List<String> heights;
-  final FixedExtentScrollController controller;
+  late FixedExtentScrollController controller;
+
+  @override
+  State<HeightWidget> createState() => _HeightWidgetState();
+}
+
+class _HeightWidgetState extends State<HeightWidget> {
+  @override
+  void initState() {
+    final int initialIndex = widget.heights.indexOf(widget.height);
+    widget.controller = FixedExtentScrollController(initialItem: initialIndex);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -81,18 +108,21 @@ class HeightWidget extends StatelessWidget {
                   ),
                 ),
                 ListWheelScrollView.useDelegate(
-                  controller: controller,
+                  controller: widget.controller,
                   diameterRatio: 100,
                   itemExtent: 50,
+                  onSelectedItemChanged: (value) {
+                    widget.setHeightState(widget.heights[value]);
+                  },
                   physics: const FixedExtentScrollPhysics(),
                   childDelegate: ListWheelChildBuilderDelegate(
                     builder: (context, index) {
                       return AnimatedBuilder(
-                        animation: controller,
+                        animation: widget.controller,
                         builder: (context, child) {
                           // print("Selected item: ${_controller.selectedItem}");
                           double selectedIndex =
-                              controller.selectedItem.toDouble();
+                              widget.controller.selectedItem.toDouble();
                           double difference = (selectedIndex - index).abs();
                           double scale = 1 - (difference * 0.1).clamp(0.0, 0.5);
                           double offset = (difference * 20).clamp(0.0, 40);
@@ -109,15 +139,16 @@ class HeightWidget extends StatelessWidget {
                                   scale: scale,
                                   child: Center(
                                     child: Text(
-                                      heights[index],
+                                      widget.heights[index],
                                       style: TextStyle(
-                                        color: index == controller.selectedItem
+                                        color: index ==
+                                                widget.controller.selectedItem
                                             ? AppColors.secondary
                                             : Colors.grey,
-                                        fontSize:
-                                            index == controller.selectedItem
-                                                ? 20
-                                                : 15,
+                                        fontSize: index ==
+                                                widget.controller.selectedItem
+                                            ? 20
+                                            : 15,
                                         fontWeight: FontWeight.w500,
                                       ),
                                       textAlign: TextAlign.center,
@@ -130,7 +161,7 @@ class HeightWidget extends StatelessWidget {
                         },
                       );
                     },
-                    childCount: heights.length,
+                    childCount: widget.heights.length,
                   ),
                 ),
               ],

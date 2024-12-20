@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:varzish/models/userInfo.dart';
 import 'package:varzish/screens/onboarding/age_screen.dart';
 import 'package:varzish/screens/onboarding/height_screen.dart';
 import 'package:varzish/screens/onboarding/plan_screen.dart';
@@ -16,7 +17,43 @@ class Onboarding extends StatefulWidget {
 
 class _OnboardingState extends State<Onboarding> {
   final PageController _pageController = PageController();
+  final Userinfo userinfo = new Userinfo();
   var pageIndex = 0;
+
+  void setPlanState(String plan) {
+    setState(() {
+      userinfo.Plan = plan;
+    });
+  }
+
+  void setAgeState(int year) {
+    int age = DateTime.now().year - year;
+    setState(() {
+      userinfo.age = age;
+    });
+  }
+
+  void setWeightState(int weight) {
+    setState(() {
+      userinfo.Weight = weight;
+    });
+  }
+
+  void setHeightState(String height) {
+    setState(() {
+      userinfo.Height = height;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    userinfo.Plan = "Beginner";
+    userinfo.Height = "3'0";
+    userinfo.Weight = 50;
+    userinfo.age = DateTime.now().year - 1960;
+  }
+
   @override
   void dispose() {
     _pageController.dispose();
@@ -53,6 +90,13 @@ class _OnboardingState extends State<Onboarding> {
         );
       }
     }
+  }
+
+  void _finalizeData() {
+    print(userinfo.Plan);
+    print(userinfo.age);
+    print(userinfo.Weight);
+    print(userinfo.Height);
   }
 
   @override
@@ -106,12 +150,24 @@ class _OnboardingState extends State<Onboarding> {
               margin: EdgeInsets.only(top: 20),
               child: PageView(
                 controller: _pageController,
-                physics: const NeverScrollableScrollPhysics(), // Disable swipe
+                physics: const NeverScrollableScrollPhysics(),
                 children: [
-                  const PlanScreen(),
-                  HeightScreen(),
-                  WeightScreen(),
-                  const AgeScreen(),
+                  PlanScreen(
+                    plan: userinfo.Plan,
+                    setPlanState: setPlanState,
+                  ),
+                  HeightScreen(
+                    height: userinfo.Height,
+                    setHeightState: setHeightState,
+                  ),
+                  WeightScreen(
+                    weight: userinfo.Weight,
+                    setWeightState: setWeightState,
+                  ),
+                  AgeScreen(
+                    age: userinfo.age,
+                    setAgeState: setAgeState,
+                  ),
                 ],
               ),
             ),
@@ -122,9 +178,9 @@ class _OnboardingState extends State<Onboarding> {
                 : OutlinedButton(
                     onPressed: _moveToPreviousPage,
                     style: OutlinedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
+                      backgroundColor: Colors.transparent,
                       padding: const EdgeInsets.symmetric(horizontal: 30),
-                      side: const BorderSide(width: 0),
+                      side: const BorderSide(color: Colors.white, width: 0.5),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(11),
                       ),
@@ -132,13 +188,13 @@ class _OnboardingState extends State<Onboarding> {
                     child: const Text(
                       "Back",
                       style: TextStyle(
-                          color: Color.fromARGB(255, 86, 86, 86),
+                          color: Colors.white,
                           fontSize: 18,
-                          fontWeight: FontWeight.w600),
+                          fontWeight: FontWeight.w200),
                     ),
                   ),
             OutlinedButton(
-              onPressed: _moveToNextPage,
+              onPressed: (pageIndex == 3) ? _finalizeData : _moveToNextPage,
               style: OutlinedButton.styleFrom(
                 backgroundColor: AppColors.primary,
                 side: const BorderSide(width: 0),
