@@ -16,6 +16,36 @@ class HeightScreen extends StatefulWidget {
 }
 
 class _HeightScreenState extends State<HeightScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Heading(text: "Enter Your Height"),
+        const SizedBox(height: 20),
+        HeightWidget(
+          height: widget.height,
+          setHeightState: widget.setHeightState,
+        )
+      ],
+    );
+  }
+}
+
+class HeightWidget extends StatefulWidget {
+  HeightWidget({
+    super.key,
+    required this.height,
+    required this.setHeightState,
+  });
+  late final String height;
+  final void Function(String height) setHeightState;
+  late FixedExtentScrollController controller = FixedExtentScrollController();
+
+  @override
+  State<HeightWidget> createState() => _HeightWidgetState();
+}
+
+class _HeightWidgetState extends State<HeightWidget> {
   List<String> _generateHeights() {
     List<String> heights = [];
     for (int ft = 3; ft <= 8; ft++) {
@@ -26,45 +56,12 @@ class _HeightScreenState extends State<HeightScreen> {
     return heights;
   }
 
-  final FixedExtentScrollController _controller = FixedExtentScrollController();
-  @override
-  Widget build(BuildContext context) {
-    List<String> heights = _generateHeights();
-    return Column(
-      children: [
-        const Heading(text: "Enter Your Height"),
-        const SizedBox(height: 20),
-        HeightWidget(
-            height: widget.height,
-            setHeightState: widget.setHeightState,
-            heights: heights,
-            controller: _controller)
-      ],
-    );
-  }
-}
-
-class HeightWidget extends StatefulWidget {
-  HeightWidget({
-    super.key,
-    required this.height,
-    required this.heights,
-    required this.controller,
-    required this.setHeightState,
-  });
-  late final String height;
-  final void Function(String height) setHeightState;
-  final List<String> heights;
-  late FixedExtentScrollController controller;
-
-  @override
-  State<HeightWidget> createState() => _HeightWidgetState();
-}
-
-class _HeightWidgetState extends State<HeightWidget> {
+  late List<String> heights;
   @override
   void initState() {
-    final int initialIndex = widget.heights.indexOf(widget.height);
+    super.initState();
+    heights = _generateHeights();
+    final int initialIndex = heights.indexOf(widget.height);
     widget.controller = FixedExtentScrollController(initialItem: initialIndex);
   }
 
@@ -112,7 +109,7 @@ class _HeightWidgetState extends State<HeightWidget> {
                   diameterRatio: 100,
                   itemExtent: 50,
                   onSelectedItemChanged: (value) {
-                    widget.setHeightState(widget.heights[value]);
+                    widget.setHeightState(heights[value]);
                   },
                   physics: const FixedExtentScrollPhysics(),
                   childDelegate: ListWheelChildBuilderDelegate(
@@ -139,7 +136,7 @@ class _HeightWidgetState extends State<HeightWidget> {
                                   scale: scale,
                                   child: Center(
                                     child: Text(
-                                      widget.heights[index],
+                                      heights[index],
                                       style: TextStyle(
                                         color: index ==
                                                 widget.controller.selectedItem
@@ -161,7 +158,7 @@ class _HeightWidgetState extends State<HeightWidget> {
                         },
                       );
                     },
-                    childCount: widget.heights.length,
+                    childCount: heights.length,
                   ),
                 ),
               ],

@@ -3,12 +3,14 @@ import 'package:varzish/models/userInfo.dart';
 import 'package:varzish/screens/onboarding/age_screen.dart';
 import 'package:varzish/screens/onboarding/height_screen.dart';
 import 'package:varzish/screens/onboarding/plan_screen.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:varzish/screens/onboarding/weight_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:varzish/utils/AppColors.dart';
+import 'package:varzish/widgets/logo.dart';
 
 class Onboarding extends StatefulWidget {
+  const Onboarding({super.key});
+
   @override
   State<Onboarding> createState() {
     return _OnboardingState();
@@ -17,9 +19,9 @@ class Onboarding extends StatefulWidget {
 
 class _OnboardingState extends State<Onboarding> {
   final PageController _pageController = PageController();
-  final Userinfo userinfo = new Userinfo();
+  final Userinfo userinfo = Userinfo();
   var pageIndex = 0;
-
+  bool disableButton = false;
   void setPlanState(String plan) {
     setState(() {
       userinfo.Plan = plan;
@@ -60,7 +62,10 @@ class _OnboardingState extends State<Onboarding> {
     super.dispose();
   }
 
-  void _moveToNextPage() {
+  void _moveToNextPage() async {
+    setState(() {
+      disableButton = true;
+    });
     if (_pageController.hasClients) {
       final nextPage = (_pageController.page?.toInt() ?? 0) + 1;
       if (nextPage < 4) {
@@ -73,10 +78,18 @@ class _OnboardingState extends State<Onboarding> {
           curve: Curves.easeInOut,
         );
       }
+      await Future.delayed(const Duration(milliseconds: 600));
+      setState(() {
+        disableButton = false;
+      });
     }
   }
 
-  void _moveToPreviousPage() {
+  void _moveToPreviousPage() async {
+    setState(() {
+      disableButton = true;
+    });
+
     if (_pageController.hasClients) {
       final prevPage = (_pageController.page?.toInt() ?? 1) - 1;
       if (prevPage >= 0) {
@@ -89,14 +102,16 @@ class _OnboardingState extends State<Onboarding> {
           curve: Curves.easeInOut,
         );
       }
+      await Future.delayed(const Duration(milliseconds: 600));
+      setState(() {
+        disableButton = false;
+      });
     }
   }
 
   void _finalizeData() {
-    print(userinfo.Plan);
-    print(userinfo.age);
-    print(userinfo.Weight);
-    print(userinfo.Height);
+    print(
+        "Plan ${userinfo.Plan} Weight ${userinfo.Weight} Age ${userinfo.age} Height ${userinfo.Height}");
   }
 
   @override
@@ -120,34 +135,10 @@ class _OnboardingState extends State<Onboarding> {
           const SizedBox(
             height: 8,
           ),
-          Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SvgPicture.asset(
-                  'assets/svg/logo.svg',
-                  width: 50,
-                  height: 50,
-                ),
-                const SizedBox(
-                  height: 7,
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 10),
-                  child: const Text(
-                    "Your Personal Fitness Companion.",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 13,
-                        color: Color.fromARGB(255, 255, 255, 255)),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          Logo(),
           Expanded(
             child: Container(
-              margin: EdgeInsets.only(top: 20),
+              margin: const EdgeInsets.only(top: 20),
               child: PageView(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
@@ -174,9 +165,9 @@ class _OnboardingState extends State<Onboarding> {
           ),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             pageIndex == 0
-                ? SizedBox.shrink()
+                ? const SizedBox.shrink()
                 : OutlinedButton(
-                    onPressed: _moveToPreviousPage,
+                    onPressed: !disableButton ? _moveToPreviousPage : null,
                     style: OutlinedButton.styleFrom(
                       backgroundColor: Colors.transparent,
                       padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -194,7 +185,11 @@ class _OnboardingState extends State<Onboarding> {
                     ),
                   ),
             OutlinedButton(
-              onPressed: (pageIndex == 3) ? _finalizeData : _moveToNextPage,
+              onPressed: !disableButton
+                  ? (pageIndex == 3)
+                      ? _finalizeData
+                      : _moveToNextPage
+                  : null,
               style: OutlinedButton.styleFrom(
                 backgroundColor: AppColors.primary,
                 side: const BorderSide(width: 0),
@@ -202,15 +197,25 @@ class _OnboardingState extends State<Onboarding> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(11),
                 ),
+              ).copyWith(
+                backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                  (Set<WidgetState> states) {
+                    if (states.contains(WidgetState.pressed)) {
+                      return const Color.fromARGB(164, 125, 216, 13);
+                    }
+                    return AppColors.primary;
+                  },
+                ),
               ),
               child: Text(
                 (pageIndex == 3) ? "Finish" : "Next",
                 style: const TextStyle(
-                    color: Color.fromARGB(255, 86, 86, 86),
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600),
+                  color: Color.fromARGB(255, 86, 86, 86),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
+            )
           ])
         ],
       ),

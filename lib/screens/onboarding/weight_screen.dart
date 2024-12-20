@@ -17,7 +17,6 @@ class WeightScreen extends StatefulWidget {
 
 class _WeightScreenState extends State<WeightScreen> {
   final List<int> weightList = List.generate(101, (index) => index + 50);
-
   late FixedExtentScrollController _controller;
 
   @override
