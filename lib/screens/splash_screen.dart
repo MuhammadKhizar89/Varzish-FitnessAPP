@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:varzish/utils/screenConstraints.dart';
+import 'package:varzish/widgets/background_theme.dart';
 import 'package:varzish/widgets/logo.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -24,19 +25,21 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Logo(),
-          SizedBox(
-            height: 7,
-          ),
-          LoadingAnimationWidget.staggeredDotsWave(
-            color: Colors.white,
-            size: 50,
-          )
-        ],
+    return BackgroundTheme(
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Logo(),
+            SizedBox(
+              height: 7,
+            ),
+            LoadingAnimationWidget.staggeredDotsWave(
+              color: Colors.white,
+              size: 50,
+            )
+          ],
+        ),
       ),
     );
   }

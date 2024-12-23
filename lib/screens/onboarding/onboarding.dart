@@ -6,6 +6,8 @@ import 'package:varzish/screens/onboarding/plan_screen.dart';
 import 'package:varzish/screens/onboarding/weight_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:varzish/utils/AppColors.dart';
+import 'package:varzish/widgets/background_theme.dart';
+import 'package:varzish/widgets/loading.dart';
 import 'package:varzish/widgets/logo.dart';
 
 class Onboarding extends StatefulWidget {
@@ -112,112 +114,116 @@ class _OnboardingState extends State<Onboarding> {
   void _finalizeData() {
     print(
         "Plan ${userinfo.Plan} Weight ${userinfo.Weight} Age ${userinfo.age} Height ${userinfo.Height}");
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const Loading()));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SmoothPageIndicator(
-            controller: _pageController,
-            count: 4,
-            effect: const ExpandingDotsEffect(
-              dotWidth: 15,
-              dotHeight: 4,
-              activeDotColor: AppColors.primary,
-              dotColor: AppColors.secondary,
+    return BackgroundTheme(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SmoothPageIndicator(
+              controller: _pageController,
+              count: 4,
+              effect: const ExpandingDotsEffect(
+                dotWidth: 15,
+                dotHeight: 4,
+                activeDotColor: AppColors.primary,
+                dotColor: AppColors.secondary,
+              ),
+              onDotClicked: (index) {},
             ),
-            onDotClicked: (index) {},
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Logo(),
-          Expanded(
-            child: Container(
-              margin: const EdgeInsets.only(top: 20),
-              child: PageView(
-                controller: _pageController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  PlanScreen(
-                    plan: userinfo.Plan,
-                    setPlanState: setPlanState,
-                  ),
-                  HeightScreen(
-                    height: userinfo.Height,
-                    setHeightState: setHeightState,
-                  ),
-                  WeightScreen(
-                    weight: userinfo.Weight,
-                    setWeightState: setWeightState,
-                  ),
-                  AgeScreen(
-                    age: userinfo.age,
-                    setAgeState: setAgeState,
-                  ),
-                ],
+            const SizedBox(
+              height: 8,
+            ),
+            Logo(),
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.only(top: 20),
+                child: PageView(
+                  controller: _pageController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    PlanScreen(
+                      plan: userinfo.Plan,
+                      setPlanState: setPlanState,
+                    ),
+                    HeightScreen(
+                      height: userinfo.Height,
+                      setHeightState: setHeightState,
+                    ),
+                    WeightScreen(
+                      weight: userinfo.Weight,
+                      setWeightState: setWeightState,
+                    ),
+                    AgeScreen(
+                      age: userinfo.age,
+                      setAgeState: setAgeState,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            pageIndex == 0
-                ? const SizedBox.shrink()
-                : OutlinedButton(
-                    onPressed: !disableButton ? _moveToPreviousPage : null,
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      side: const BorderSide(color: Colors.white, width: 0.5),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(11),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              pageIndex == 0
+                  ? const SizedBox.shrink()
+                  : OutlinedButton(
+                      onPressed: !disableButton ? _moveToPreviousPage : null,
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        side: const BorderSide(color: Colors.white, width: 0.5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(11),
+                        ),
+                      ),
+                      child: const Text(
+                        "Back",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w200),
                       ),
                     ),
-                    child: const Text(
-                      "Back",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w200),
-                    ),
+              OutlinedButton(
+                onPressed: !disableButton
+                    ? (pageIndex == 3)
+                        ? _finalizeData
+                        : _moveToNextPage
+                    : null,
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  side: const BorderSide(width: 0),
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(11),
                   ),
-            OutlinedButton(
-              onPressed: !disableButton
-                  ? (pageIndex == 3)
-                      ? _finalizeData
-                      : _moveToNextPage
-                  : null,
-              style: OutlinedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                side: const BorderSide(width: 0),
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(11),
+                ).copyWith(
+                  backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                    (Set<WidgetState> states) {
+                      if (states.contains(WidgetState.pressed)) {
+                        return const Color.fromARGB(164, 125, 216, 13);
+                      }
+                      return AppColors.primary;
+                    },
+                  ),
                 ),
-              ).copyWith(
-                backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                  (Set<WidgetState> states) {
-                    if (states.contains(WidgetState.pressed)) {
-                      return const Color.fromARGB(164, 125, 216, 13);
-                    }
-                    return AppColors.primary;
-                  },
+                child: Text(
+                  (pageIndex == 3) ? "Finish" : "Next",
+                  style: const TextStyle(
+                    color: Color.fromARGB(255, 86, 86, 86),
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-              child: Text(
-                (pageIndex == 3) ? "Finish" : "Next",
-                style: const TextStyle(
-                  color: Color.fromARGB(255, 86, 86, 86),
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            )
-          ])
-        ],
+              )
+            ])
+          ],
+        ),
       ),
     );
   }

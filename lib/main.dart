@@ -10,9 +10,7 @@ void main() {
       theme: ThemeData(
         fontFamily: 'Poppins', // Default font family
       ),
-      home: Scaffold(
-        body: MyWidget(),
-      ),
+      home: const MyWidget(),
     ),
   );
 }
@@ -38,8 +36,8 @@ class _MyWidgetState extends State<MyWidget> with TickerProviderStateMixin {
     splashAnimation = Tween<double>(begin: 1, end: 0).animate(
         CurvedAnimation(parent: splashController, curve: Curves.easeIn));
 
-    onboardingController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 2));
+    onboardingController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1500));
 
     onboardingAnimation = Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(parent: onboardingController, curve: Curves.easeIn));
@@ -67,7 +65,7 @@ class _MyWidgetState extends State<MyWidget> with TickerProviderStateMixin {
       ),
       child: splash
           ? AnimatedBuilder(
-              animation: splashController,
+              animation: splashAnimation,
               builder: (context, child) {
                 print(splashController.value);
                 return Opacity(
