@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:varzish/models/userInfo.dart';
+import 'package:varzish/screens/BMI_screen.dart';
 import 'package:varzish/screens/onboarding/age_screen.dart';
 import 'package:varzish/screens/onboarding/height_screen.dart';
 import 'package:varzish/screens/onboarding/plan_screen.dart';
@@ -24,6 +25,7 @@ class _OnboardingState extends State<Onboarding> {
   final Userinfo userinfo = Userinfo();
   var pageIndex = 0;
   bool disableButton = false;
+  bool isLoading = false;
   void setPlanState(String plan) {
     setState(() {
       userinfo.Plan = plan;
@@ -111,11 +113,30 @@ class _OnboardingState extends State<Onboarding> {
     }
   }
 
-  void _finalizeData() {
-    print(
-        "Plan ${userinfo.Plan} Weight ${userinfo.Weight} Age ${userinfo.age} Height ${userinfo.Height}");
+  void _finalizeData() async {
+    setState(() {
+      isLoading = true;
+      disableButton = true;
+    });
+    await Future.delayed(const Duration(seconds: 2));
+    List<String> heightParts = userinfo.Height.split("'");
+    int feet = int.parse(heightParts[0]);
+    int inches = heightParts.length > 1 ? int.parse(heightParts[1]) : 0;
+    int totalInches = (feet * 12) + inches;
+    double heightInMeters = totalInches * 0.0254;
+    double bmi = userinfo.Weight / (heightInMeters * heightInMeters);
+    setState(() {
+      isLoading = false;
+      disableButton = false;
+    });
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const Loading()));
+      context,
+      MaterialPageRoute(
+        builder: (context) => BMI_Screen(
+          BMI: bmi,
+        ),
+      ),
+    );
   }
 
   @override
@@ -168,60 +189,73 @@ class _OnboardingState extends State<Onboarding> {
                 ),
               ),
             ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              pageIndex == 0
-                  ? const SizedBox.shrink()
-                  : OutlinedButton(
-                      onPressed: !disableButton ? _moveToPreviousPage : null,
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                        side: const BorderSide(color: Colors.white, width: 0.5),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(11),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                pageIndex == 0
+                    ? const SizedBox.shrink()
+                    : OutlinedButton(
+                        onPressed: !disableButton ? _moveToPreviousPage : null,
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          side:
+                              const BorderSide(color: Colors.white, width: 0.5),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(11),
+                          ),
+                        ),
+                        child: const Text(
+                          "Back",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w200),
                         ),
                       ),
-                      child: const Text(
-                        "Back",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w200),
-                      ),
+                OutlinedButton(
+                  onPressed: !disableButton
+                      ? (pageIndex == 3)
+                          ? _finalizeData
+                          : _moveToNextPage
+                      : null,
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    side: const BorderSide(width: 0),
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(11),
                     ),
-              OutlinedButton(
-                onPressed: !disableButton
-                    ? (pageIndex == 3)
-                        ? _finalizeData
-                        : _moveToNextPage
-                    : null,
-                style: OutlinedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  side: const BorderSide(width: 0),
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(11),
+                  ).copyWith(
+                    backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                      (Set<WidgetState> states) {
+                        if (states.contains(WidgetState.pressed)) {
+                          return const Color.fromARGB(164, 125, 216, 13);
+                        }
+                        return AppColors.primary;
+                      },
+                    ),
                   ),
-                ).copyWith(
-                  backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                    (Set<WidgetState> states) {
-                      if (states.contains(WidgetState.pressed)) {
-                        return const Color.fromARGB(164, 125, 216, 13);
-                      }
-                      return AppColors.primary;
-                    },
-                  ),
+                  child: isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Color.fromARGB(255, 86, 86, 86),
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : Text(
+                          (pageIndex == 3) ? "Finish" : "Next",
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 86, 86, 86),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                 ),
-                child: Text(
-                  (pageIndex == 3) ? "Finish" : "Next",
-                  style: const TextStyle(
-                    color: Color.fromARGB(255, 86, 86, 86),
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              )
-            ])
+              ],
+            )
           ],
         ),
       ),

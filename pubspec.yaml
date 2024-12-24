@@ -67,6 +67,8 @@ flutter:
     - assets/svg/logo.svg
     - assets/_backgroundImage.png
     - assets/svg/loading.svg
+    - assets/svg/BMI_scale.svg
+    - assets/svg/BMI_scale_stick.svg
 
   fonts:
     - family: Poppins
