@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:varzish/screens/homeScreen/home_page.dart';
 import 'package:varzish/screens/onboarding/onboarding.dart';
 import 'package:varzish/utils/AppColors.dart';
 import 'package:varzish/utils/app_constants.dart';
@@ -27,9 +28,17 @@ class _LoadingState extends State<Loading> with TickerProviderStateMixin {
         .animate(CurvedAnimation(parent: ac, curve: Curves.linear));
     ac.repeat();
     Future.delayed(const Duration(seconds: 5), () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Onboarding()));
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        '/home',
+        (Route<dynamic> route) => false,
+      );
     });
+  }
+
+  @override
+  void dispose() {
+    ac.dispose();
+    super.dispose();
   }
 
   @override

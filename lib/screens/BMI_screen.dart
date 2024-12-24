@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:varzish/utils/AppColors.dart';
 import 'package:varzish/utils/screenConstraints.dart';
 import 'package:varzish/widgets/background_theme.dart';
-import 'package:varzish/widgets/loading.dart';
 import 'package:varzish/widgets/logo.dart';
 
 class BMI_Screen extends StatefulWidget {
@@ -21,6 +20,7 @@ class _BMI_ScreenState extends State<BMI_Screen> {
     BMI = widget.BMI;
   }
 
+  // ignore: non_constant_identifier_names
   String BMIStatus() {
     if (BMI < 18.5) {
       return "Underweight";
@@ -46,8 +46,8 @@ class _BMI_ScreenState extends State<BMI_Screen> {
   }
 
   void _generatePlan() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const Loading()));
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/loading', (Route<dynamic> route) => false);
   }
 
   @override

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:varzish/utils/screenConstraints.dart';
 import 'package:varzish/widgets/background_theme.dart';
 import 'package:varzish/widgets/logo.dart';
 
@@ -31,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Logo(),
-            SizedBox(
+            const SizedBox(
               height: 7,
             ),
             LoadingAnimationWidget.staggeredDotsWave(

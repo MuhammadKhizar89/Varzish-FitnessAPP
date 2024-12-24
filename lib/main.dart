@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:varzish/screens/BMI_screen.dart';
+import 'package:varzish/screens/homeScreen/home_page.dart';
 import 'package:varzish/screens/onboarding/onboarding.dart';
 import 'package:varzish/screens/splash_screen.dart';
 import 'package:varzish/utils/screenConstraints.dart';
+import 'package:varzish/widgets/loading.dart';
 
 void main() {
   runApp(
@@ -11,6 +14,12 @@ void main() {
         fontFamily: 'Poppins', // Default font family
       ),
       home: const MyWidget(),
+      routes: <String, WidgetBuilder>{
+        '/onboarding': (BuildContext context) => new Onboarding(),
+        '/loading': (BuildContext context) => new Loading(),
+        '/home': (BuildContext context) => new HomePage(),
+        // '/exerciseList': (BuildContext context) => new ExeciseList(),
+      },
     ),
   );
 }
