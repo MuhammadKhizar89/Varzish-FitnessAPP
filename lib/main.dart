@@ -96,7 +96,8 @@ class _MyWidgetState extends State<MyWidget> with TickerProviderStateMixin {
               builder: (context, child) {
                 return Opacity(
                   opacity: onboardingAnimation.value,
-                  child: const Onboarding(),
+                  // child: const Onboarding(),
+                  child: HomePage(),
                 );
               },
             ),

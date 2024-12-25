@@ -77,10 +77,8 @@ class _PlanListState extends State<PlanList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: exercises.length,
-      itemBuilder: (context, index) {
-        final exercise = exercises[index];
+    return Column(
+      children: exercises.map((exercise) {
         return Container(
           margin: const EdgeInsets.only(bottom: 10),
           child: GestureDetector(
@@ -89,7 +87,7 @@ class _PlanListState extends State<PlanList> {
             },
             child: PlanCard(
               dayNo: exercise["dayNo"],
-              todayWorkoutDay: 01,
+              todayWorkoutDay: 02,
               completedPercentage: exercise["completedPercentage"],
               title: exercise["title"],
               description: exercise["description"],
@@ -98,7 +96,7 @@ class _PlanListState extends State<PlanList> {
             ),
           ),
         );
-      },
+      }).toList(),
     );
   }
 }

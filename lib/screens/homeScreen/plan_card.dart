@@ -27,12 +27,13 @@ class _PlanCardState extends State<PlanCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color:
-            widget.todayWorkoutDay != widget.dayNo ? Colors.grey : Colors.black,
+        border: Border.all(color: Colors.black, width: 2),
+        color: widget.todayWorkoutDay != widget.dayNo
+            ? const Color.fromARGB(255, 223, 223, 223)
+            : Colors.black,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,19 +49,25 @@ class _PlanCardState extends State<PlanCard> {
                 percent: widget.completedPercentage / 100,
                 center: Text(
                   "${widget.completedPercentage.toString()}%",
-                  style: const TextStyle(
-                      color: Colors.white,
+                  style: TextStyle(
+                      color: widget.todayWorkoutDay == widget.dayNo
+                          ? Colors.white
+                          : Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 10.0),
                 ),
                 circularStrokeCap: CircularStrokeCap.butt,
                 backgroundColor: const Color.fromARGB(255, 217, 217, 217),
-                progressColor: AppColors.secondary,
+                progressColor: widget.todayWorkoutDay == widget.dayNo
+                    ? AppColors.secondary
+                    : Colors.black,
               ),
               Text(
                 "0${widget.dayNo}",
-                style: const TextStyle(
-                    color: Colors.white,
+                style: TextStyle(
+                    color: widget.todayWorkoutDay == widget.dayNo
+                        ? AppColors.secondary
+                        : Colors.black,
                     fontSize: 33,
                     fontWeight: FontWeight.bold),
               ),
@@ -79,16 +86,20 @@ class _PlanCardState extends State<PlanCard> {
                   children: [
                     Text(
                       widget.title,
-                      style: const TextStyle(
-                          color: AppColors.secondary,
+                      style: TextStyle(
+                          color: widget.todayWorkoutDay == widget.dayNo
+                              ? AppColors.secondary
+                              : Colors.black,
                           fontSize: 28,
                           fontWeight: FontWeight.bold),
                       textAlign: TextAlign.start,
                     ),
                     Text(
                       widget.description,
-                      style: const TextStyle(
-                          color: Colors.white,
+                      style: TextStyle(
+                          color: widget.todayWorkoutDay == widget.dayNo
+                              ? Colors.white
+                              : Colors.black,
                           fontSize: 8,
                           fontWeight: FontWeight.w300),
                     ),
@@ -97,30 +108,38 @@ class _PlanCardState extends State<PlanCard> {
                     ),
                     Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.local_fire_department,
-                          color: AppColors.secondary,
+                          color: widget.todayWorkoutDay == widget.dayNo
+                              ? AppColors.secondary
+                              : Colors.black,
                           size: 15,
                         ),
                         Text(
                           "${widget.calories.toString()}kcal",
-                          style: const TextStyle(
-                              color: Colors.white,
+                          style: TextStyle(
+                              color: widget.todayWorkoutDay == widget.dayNo
+                                  ? Colors.white
+                                  : Colors.black,
                               fontSize: 10,
                               fontWeight: FontWeight.w300),
                         ),
                         const SizedBox(
                           width: 10,
                         ),
-                        const Icon(
+                        Icon(
                           Icons.hourglass_empty,
-                          color: AppColors.secondary,
+                          color: widget.todayWorkoutDay == widget.dayNo
+                              ? AppColors.secondary
+                              : Colors.black,
                           size: 12,
                         ),
                         Text(
                           "${widget.time} min",
                           style: TextStyle(
-                              color: Colors.white,
+                              color: widget.todayWorkoutDay == widget.dayNo
+                                  ? Colors.white
+                                  : Colors.black,
                               fontSize: 10,
                               fontWeight: FontWeight.w300),
                         ),
@@ -139,6 +158,7 @@ class _PlanCardState extends State<PlanCard> {
                   decoration: BoxDecoration(
                     color: AppColors.secondary,
                     borderRadius: BorderRadius.circular(50),
+                    border: Border.all(color: Colors.black, width: 0.6),
                   ),
                   child: Icon(
                     widget.completedPercentage == 100
