@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:varzish/screens/BMI_screen.dart';
-import 'package:varzish/screens/homeScreen/home_page.dart';
+import 'package:varzish/screens/home/home_page.dart';
 import 'package:varzish/screens/onboarding/onboarding.dart';
 import 'package:varzish/screens/splash_screen.dart';
 import 'package:varzish/utils/screenConstraints.dart';

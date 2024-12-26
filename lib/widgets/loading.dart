@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:varzish/screens/homeScreen/home_page.dart';
+import 'package:varzish/screens/home/home_page.dart';
 import 'package:varzish/screens/onboarding/onboarding.dart';
 import 'package:varzish/utils/AppColors.dart';
 import 'package:varzish/utils/app_constants.dart';

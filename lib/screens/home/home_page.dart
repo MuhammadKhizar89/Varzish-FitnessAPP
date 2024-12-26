@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:varzish/screens/homeScreen/date_card.dart';
-import 'package:varzish/screens/homeScreen/date_list.dart';
-import 'package:varzish/screens/homeScreen/my_plan.dart';
-import 'package:varzish/screens/homeScreen/plan_list.dart';
-import 'package:varzish/screens/homeScreen/stats.dart';
+import 'package:varzish/screens/account_info/account_info.dart';
+import 'package:varzish/screens/home/date_card.dart';
+import 'package:varzish/screens/home/date_list.dart';
+import 'package:varzish/screens/home/my_plan.dart';
+import 'package:varzish/screens/home/plan_list.dart';
+import 'package:varzish/screens/home/stats.dart';
 import 'package:varzish/utils/AppColors.dart';
 
 class HomePage extends StatefulWidget {
@@ -40,7 +41,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              showModalBottomSheet(
+                  context: context, builder: (context) => const AccountInfo());
+            },
             icon: const Icon(Icons.account_circle),
           )
         ],

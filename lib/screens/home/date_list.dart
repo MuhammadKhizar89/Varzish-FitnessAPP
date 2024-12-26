@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:varzish/screens/homeScreen/date_card.dart';
+import 'package:varzish/screens/home/date_card.dart';
 import 'package:varzish/utils/screenConstraints.dart';
 
 class DateList extends StatefulWidget {
