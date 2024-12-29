@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:varzish/screens/account_info/account_info.dart';
-import 'package:varzish/screens/home/date_card.dart';
-import 'package:varzish/screens/home/date_list.dart';
-import 'package:varzish/screens/home/my_plan.dart';
-import 'package:varzish/screens/home/plan_list.dart';
-import 'package:varzish/screens/home/stats.dart';
-import 'package:varzish/utils/AppColors.dart';
+import 'package:varzish/screens/home/exercise/exercise.dart';
+import 'package:varzish/screens/home/plan/my_plan.dart';
+import 'package:varzish/screens/home/stats/stats.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

@@ -12,13 +12,7 @@ class _AccountInfoState extends State<AccountInfo> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFFE3F2FD), Color.fromARGB(255, 187, 251, 208)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
+      color: const Color.fromARGB(255, 223, 223, 223),
       padding: const EdgeInsets.all(15),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -60,7 +54,7 @@ class _AccountInfoState extends State<AccountInfo> {
             ),
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 Icon(
                   Icons.restart_alt_sharp,
                   color: Colors.white,

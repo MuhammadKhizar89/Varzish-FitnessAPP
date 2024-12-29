@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:varzish/screens/home/date_list.dart';
-import 'package:varzish/screens/home/plan_list.dart';
+import 'package:varzish/screens/home/date/date_list.dart';
+import 'package:varzish/screens/home/plan/plan_list.dart';
 
 class MyPlan extends StatefulWidget {
   const MyPlan({super.key});

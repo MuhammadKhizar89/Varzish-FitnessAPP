@@ -11,7 +11,7 @@ void main() {
     MaterialApp(
       title: "Varzish",
       theme: ThemeData(
-        fontFamily: 'Poppins', // Default font family
+        fontFamily: 'Poppins',
       ),
       home: const MyWidget(),
       routes: <String, WidgetBuilder>{

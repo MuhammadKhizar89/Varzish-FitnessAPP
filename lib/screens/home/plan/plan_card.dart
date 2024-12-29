@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:varzish/screens/home/exercise/exrcises_list.dart';
 import 'package:varzish/utils/AppColors.dart';
 
 class PlanCard extends StatefulWidget {
@@ -63,7 +64,7 @@ class _PlanCardState extends State<PlanCard> {
                     : Colors.black,
               ),
               Text(
-                "0${widget.dayNo}",
+                widget.dayNo < 10 ? "0${widget.dayNo}" : "${widget.dayNo}",
                 style: TextStyle(
                     color: widget.todayWorkoutDay == widget.dayNo
                         ? AppColors.secondary
@@ -90,7 +91,7 @@ class _PlanCardState extends State<PlanCard> {
                           color: widget.todayWorkoutDay == widget.dayNo
                               ? AppColors.secondary
                               : Colors.black,
-                          fontSize: 28,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold),
                       textAlign: TextAlign.start,
                     ),
@@ -152,7 +153,12 @@ class _PlanCardState extends State<PlanCard> {
                 width: 20,
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return ExrcisesList(dayNo: widget.dayNo);
+                  }));
+                },
                 child: Container(
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
