@@ -67,17 +67,30 @@ class _ExrcisesListState extends State<ExrcisesList> {
     });
   }
 
+  void decrementIndex() {
+    if (index == 0) {
+      Navigator.pop(context);
+      return;
+    }
+    setState(() {
+      index -= 1;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: exercises.isEmpty
-          ? const CircularProgressIndicator()
-          : Exercise(
-              totalExercises: exercises.length,
-              index: index,
-              incrementIndex: incrementIndex,
-              exerciseData: exercises[index],
-            ),
+    return Scaffold(
+      body: Center(
+        child: exercises.isEmpty
+            ? const CircularProgressIndicator()
+            : Exercise(
+                decrementIndex: decrementIndex,
+                totalExercises: exercises.length,
+                index: index,
+                incrementIndex: incrementIndex,
+                exerciseData: exercises[index],
+              ),
+      ),
     );
   }
 }

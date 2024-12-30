@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:varzish/data/30_days_plan.dart';
-import 'package:varzish/screens/home/exercise/exercise.dart';
 import 'package:varzish/screens/home/exercise/exrcises_list.dart';
 import 'package:varzish/screens/home/plan/plan_card.dart';
 
 class PlanList extends StatefulWidget {
   const PlanList({super.key});
-
   @override
   State<PlanList> createState() => _PlanListState();
 }

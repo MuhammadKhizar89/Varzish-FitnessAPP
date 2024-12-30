@@ -154,10 +154,13 @@ class _PlanCardState extends State<PlanCard> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) {
-                    return ExrcisesList(dayNo: widget.dayNo);
-                  }));
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return ExrcisesList(dayNo: widget.dayNo);
+                      },
+                    ),
+                  );
                 },
                 child: Container(
                   padding: EdgeInsets.all(8),
