@@ -4,7 +4,7 @@ import 'package:varzish/screens/home/exercise/exrcises_list.dart';
 import 'package:varzish/utils/AppColors.dart';
 
 class PlanCard extends StatefulWidget {
-  PlanCard(
+  const PlanCard(
       {super.key,
       required this.dayNo,
       required this.completedPercentage,
@@ -163,7 +163,7 @@ class _PlanCardState extends State<PlanCard> {
                   );
                 },
                 child: Container(
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: AppColors.secondary,
                     borderRadius: BorderRadius.circular(50),

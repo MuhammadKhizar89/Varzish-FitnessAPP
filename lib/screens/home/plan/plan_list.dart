@@ -19,18 +19,22 @@ class _PlanListState extends State<PlanList> {
           margin: const EdgeInsets.only(bottom: 10),
           child: GestureDetector(
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return ExrcisesList(dayNo: exercise["dayNo"]);
-              }));
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return ExrcisesList(dayNo: exercise.dayNo);
+                  },
+                ),
+              );
             },
             child: PlanCard(
-              dayNo: exercise["dayNo"],
+              dayNo: exercise.dayNo,
               todayWorkoutDay: 02,
-              completedPercentage: exercise["completedPercentage"],
-              title: exercise["title"],
-              description: exercise["description"],
-              calories: exercise["calories"],
-              time: exercise["time"],
+              completedPercentage: exercise.completedPercentage,
+              title: exercise.title,
+              description: exercise.description,
+              calories: exercise.calories,
+              time: exercise.time,
             ),
           ),
         );

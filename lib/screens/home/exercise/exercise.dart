@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:varzish/apis/giphy.dart';
 import 'package:varzish/models/exercise_data.dart';
 import 'package:varzish/screens/home/exercise/exercise_info.dart';
 import 'package:varzish/utils/AppColors.dart';
@@ -38,6 +37,18 @@ class _ExerciseState extends State<Exercise> {
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(Icons.login_outlined,
+                        color: Colors.black, size: 20),
+                  ),
+                ],
+              ),
               Text(
                 widget.exerciseData.name.toUpperCase().length > 38
                     ? widget.exerciseData.name.toUpperCase().substring(0, 25) +
