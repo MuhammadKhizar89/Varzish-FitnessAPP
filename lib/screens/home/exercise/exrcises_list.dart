@@ -26,17 +26,26 @@ class _ExrcisesListState extends State<ExrcisesList> {
         'x-rapidapi-host': 'exercisedb.p.rapidapi.com',
       },
     );
+
     if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      print(
-        data,
-      );
+      final data = json.decode(response.body) as List;
       setState(() {
-        exercises = data
-            .map((exerciseJson) => ExerciseData.fromJson(exerciseJson))
-            .toList();
+        for (var value in data) {
+          exercises.add(
+            ExerciseData(
+              bodyPart: value['bodyPart'] ?? '',
+              equipment: value['equipment'] ?? '',
+              gifUrl: value['gifUrl'] ?? '',
+              id: value['id'] ?? '',
+              name: value['name'] ?? '',
+              target: value['target'] ?? '',
+              secondaryMuscles:
+                  List<String>.from(value['secondaryMuscles'] ?? []),
+              instructions: List<String>.from(value['instructions'] ?? []),
+            ),
+          );
+        }
       });
-      print(exercises);
     } else {
       print('Request failed with status: ${response.statusCode}');
     }
@@ -49,6 +58,10 @@ class _ExrcisesListState extends State<ExrcisesList> {
   }
 
   void incrementIndex() {
+    if (index == exercises.length - 1) {
+      Navigator.pop(context);
+      return;
+    }
     setState(() {
       index += 1;
     });
@@ -60,6 +73,8 @@ class _ExrcisesListState extends State<ExrcisesList> {
       child: exercises.isEmpty
           ? const CircularProgressIndicator()
           : Exercise(
+              totalExercises: exercises.length,
+              index: index,
               incrementIndex: incrementIndex,
               exerciseData: exercises[index],
             ),
