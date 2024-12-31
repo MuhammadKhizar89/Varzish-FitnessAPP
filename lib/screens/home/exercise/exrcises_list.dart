@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:varzish/apis/exercise_db_api.dart';
 import 'package:varzish/models/exercise_data.dart';
 import 'package:varzish/screens/home/exercise/exercise.dart';
-import 'package:http/http.dart' as http;
 
 class ExrcisesList extends StatefulWidget {
   const ExrcisesList({super.key, required this.dayNo});
@@ -15,40 +16,47 @@ class _ExrcisesListState extends State<ExrcisesList> {
   int index = 0;
   late List<ExerciseData> exercises = [];
 
-  Future<void> fetchExercises() async {
-    final url =
-        'https://exercisedb.p.rapidapi.com/exercises?limit=10&offset=${widget.dayNo + 10}';
-    final uri = Uri.parse(url);
-    final response = await http.get(
-      uri,
-      headers: {
-        'x-rapidapi-key': 'f976efe201msh14d2053bedc2696p1631a9jsncc1c5a0e0398',
-        'x-rapidapi-host': 'exercisedb.p.rapidapi.com',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body) as List;
-      setState(() {
-        for (var value in data) {
-          exercises.add(
-            ExerciseData(
-              bodyPart: value['bodyPart'] ?? '',
-              equipment: value['equipment'] ?? '',
-              gifUrl: value['gifUrl'] ?? '',
-              id: value['id'] ?? '',
-              name: value['name'] ?? '',
-              target: value['target'] ?? '',
-              secondaryMuscles:
-                  List<String>.from(value['secondaryMuscles'] ?? []),
-              instructions: List<String>.from(value['instructions'] ?? []),
-            ),
+  void fetchExercises() async {
+    var data = await fetchExercisesAPI(widget.dayNo);
+    print(data);
+    if (data == null) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: const Text('Error'),
+            content: const Text('Cannot fetch data from Server'),
+            actions: [
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+              ),
+            ],
           );
-        }
-      });
-    } else {
-      print('Request failed with status: ${response.statusCode}');
+        },
+      );
+      return;
     }
+    setState(() {
+      for (var value in data) {
+        exercises.add(
+          ExerciseData(
+            bodyPart: value['bodyPart'] ?? '',
+            equipment: value['equipment'] ?? '',
+            gifUrl: value['gifUrl'] ?? '',
+            id: value['id'] ?? '',
+            name: value['name'] ?? '',
+            target: value['target'] ?? '',
+            secondaryMuscles:
+                List<String>.from(value['secondaryMuscles'] ?? []),
+            instructions: List<String>.from(value['instructions'] ?? []),
+          ),
+        );
+      }
+    });
   }
 
   @override
