@@ -1,8 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:varzish/apis/exercise_db_api.dart';
+import 'package:varzish/models/date.dart';
 import 'package:varzish/models/exercise_data.dart';
+import 'package:varzish/models/plan.dart';
+import 'package:varzish/providers/plan_stats_date_provider.dart';
 import 'package:varzish/screens/home/exercise/exercise.dart';
 
 class ExrcisesList extends StatefulWidget {
@@ -15,7 +19,7 @@ class ExrcisesList extends StatefulWidget {
 class _ExrcisesListState extends State<ExrcisesList> {
   int index = 0;
   late List<ExerciseData> exercises = [];
-
+  bool isLoading = false;
   void fetchExercises() async {
     var data = await fetchExercisesAPI(widget.dayNo);
     print(data);
@@ -65,13 +69,41 @@ class _ExrcisesListState extends State<ExrcisesList> {
     fetchExercises();
   }
 
-  void incrementIndex() {
+  Future<void> incrementIndex() async {
+    final provider = Provider.of<PlanStatsDateProvider>(context, listen: false);
+    setState(() {
+      isLoading = true;
+    });
+    List<Plan> planList = provider.planList;
+    List<DateModel> dateList = provider.dateList;
+    if (dateList.first.date.day == DateTime.now().day) {
+      dateList.removeAt(0);
+    }
+    dateList.insert(0, DateModel(date: DateTime.now(), isCompleted: true));
+    List<Plan> newList = planList.map((e) {
+      if (e.dayNo == widget.dayNo) {
+        return Plan(
+          dayNo: e.dayNo,
+          calories: e.calories,
+          completedPercentage:
+              index == exercises.length - 1 ? 100 : (index + 1) * 10,
+          time: e.time,
+          title: e.title,
+          description: e.description,
+        );
+      }
+      return e;
+    }).toList();
+    await provider.updatePlanList(newList, dateList);
     if (index == exercises.length - 1) {
       Navigator.pop(context);
       return;
     }
     setState(() {
       index += 1;
+    });
+    setState(() {
+      isLoading = false;
     });
   }
 
@@ -92,6 +124,7 @@ class _ExrcisesListState extends State<ExrcisesList> {
         child: exercises.isEmpty
             ? const CircularProgressIndicator()
             : Exercise(
+                isLoading: isLoading,
                 decrementIndex: decrementIndex,
                 totalExercises: exercises.length,
                 index: index,

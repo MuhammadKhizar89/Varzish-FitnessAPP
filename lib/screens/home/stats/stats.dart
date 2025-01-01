@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:provider/provider.dart';
+import 'package:varzish/providers/plan_stats_date_provider.dart';
 import 'package:varzish/screens/home/stats/stats_card.dart';
 import 'package:varzish/utils/AppColors.dart';
 import 'package:varzish/utils/screenConstraints.dart';
@@ -14,6 +16,10 @@ class Stats extends StatefulWidget {
 class _StatsState extends State<Stats> {
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<PlanStatsDateProvider>(context);
+    final calories = provider.totalCalories;
+    final time = provider.totalTime;
+    final completeion = provider.planCompletion;
     return Center(
       child: Column(
         children: [
@@ -26,22 +32,22 @@ class _StatsState extends State<Stats> {
             animation: true,
             lineHeight: 20.0,
             animationDuration: 2000,
-            percent: 0.9,
-            center: const Text(
-              "90.0%",
-              style: TextStyle(fontWeight: FontWeight.bold),
+            percent: completeion,
+            center: Text(
+              "${(completeion * 100).toStringAsFixed(2)}%",
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            barRadius: Radius.circular(10),
+            barRadius: const Radius.circular(10),
             progressColor: AppColors.primary,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           StatsCard(
             title: "Total Calories",
             icon: Icons.local_fire_department_sharp,
             iconColor: Colors.redAccent,
-            data: "500 kcal",
+            data: "${calories} kcal",
           ),
           SizedBox(
             height: 20,
@@ -50,7 +56,7 @@ class _StatsState extends State<Stats> {
             title: "Total Hours",
             icon: Icons.hourglass_empty,
             iconColor: Colors.blueAccent,
-            data: "500 Mins",
+            data: "${time} Mins",
           ),
           SizedBox(
             height: 20,

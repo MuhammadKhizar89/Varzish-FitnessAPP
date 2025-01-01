@@ -41,6 +41,9 @@ dependencies:
   percent_indicator: ^4.0.1
   http: ^1.2.2
   confetti: ^0.8.0
+  shared_preferences: ^2.3.4
+  riverpod: ^2.6.1
+  provider: ^6.1.2
   
 
 dev_dependencies:

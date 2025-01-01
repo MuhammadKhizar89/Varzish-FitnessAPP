@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:varzish/data/30_days_plan.dart';
+import 'package:varzish/local_storage/plan.dart';
+import 'package:varzish/local_storage/user_info.dart';
 import 'package:varzish/models/userInfo.dart';
 import 'package:varzish/screens/BMI_screen.dart';
 import 'package:varzish/screens/onboarding/age_screen.dart';
@@ -22,7 +27,8 @@ class Onboarding extends StatefulWidget {
 
 class _OnboardingState extends State<Onboarding> {
   final PageController _pageController = PageController();
-  final Userinfo userinfo = Userinfo();
+  late Userinfo userinfo;
+
   var pageIndex = 0;
   bool disableButton = false;
   bool isLoading = false;
@@ -54,10 +60,11 @@ class _OnboardingState extends State<Onboarding> {
   @override
   void initState() {
     super.initState();
-    userinfo.Plan = "Beginner";
-    userinfo.Height = "3'0";
-    userinfo.Weight = 50;
-    userinfo.age = DateTime.now().year - 1960;
+    userinfo = Userinfo(
+        Plan: "Beginner",
+        Height: "3'0",
+        Weight: 50,
+        age: DateTime.now().year - 1960);
   }
 
   @override
@@ -118,7 +125,9 @@ class _OnboardingState extends State<Onboarding> {
       isLoading = true;
       disableButton = true;
     });
-    await Future.delayed(const Duration(seconds: 2));
+    await savePlanLocal(planData);
+    await saveUserInfoLocal(userinfo);
+    await Future.delayed(const Duration(seconds: 1));
     List<String> heightParts = userinfo.Height.split("'");
     int feet = int.parse(heightParts[0]);
     int inches = heightParts.length > 1 ? int.parse(heightParts[1]) : 0;

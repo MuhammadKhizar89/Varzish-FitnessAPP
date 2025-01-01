@@ -9,13 +9,31 @@ class Datecard extends StatefulWidget {
       required this.month,
       required this.isCompleted});
   final DateTime date;
-  final String month;
+  final int month;
   final bool isCompleted;
   @override
   State<Datecard> createState() => _DatecardState();
 }
 
 class _DatecardState extends State<Datecard> {
+  String _getMonthName(int month) {
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ];
+    return months[month - 1];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,7 +58,7 @@ class _DatecardState extends State<Datecard> {
                 color: !widget.isCompleted ? Colors.black : Colors.white),
           ),
           Text(
-            widget.month,
+            _getMonthName(widget.month),
             style: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 9,

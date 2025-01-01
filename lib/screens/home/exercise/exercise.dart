@@ -6,14 +6,17 @@ import 'package:varzish/utils/AppColors.dart';
 import 'package:varzish/utils/screenConstraints.dart';
 
 class Exercise extends StatefulWidget {
-  const Exercise(
-      {super.key,
-      required this.index,
-      required this.exerciseData,
-      required this.incrementIndex,
-      required this.totalExercises,
-      required this.decrementIndex});
+  const Exercise({
+    super.key,
+    required this.index,
+    required this.exerciseData,
+    required this.incrementIndex,
+    required this.totalExercises,
+    required this.decrementIndex,
+    required this.isLoading,
+  });
 
+  final bool isLoading;
   final int totalExercises;
   final int index;
   final Function incrementIndex;
@@ -184,9 +187,11 @@ class _ExerciseState extends State<Exercise> {
                     ),
                   ),
                   OutlinedButton(
-                    onPressed: () {
-                      widget.incrementIndex();
-                    },
+                    onPressed: widget.isLoading
+                        ? null
+                        : () {
+                            widget.incrementIndex();
+                          },
                     style: OutlinedButton.styleFrom(
                       backgroundColor: AppColors.secondary,
                       padding: const EdgeInsets.symmetric(

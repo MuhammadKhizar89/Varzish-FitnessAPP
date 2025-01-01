@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:varzish/local_storage/user_info.dart';
+import 'package:varzish/models/userInfo.dart';
+import 'package:varzish/providers/plan_stats_date_provider.dart';
 import 'package:varzish/screens/BMI_screen.dart';
 import 'package:varzish/screens/home/home_page.dart';
 import 'package:varzish/screens/onboarding/onboarding.dart';
@@ -8,18 +12,20 @@ import 'package:varzish/widgets/loading.dart';
 
 void main() {
   runApp(
-    MaterialApp(
-      title: "Varzish",
-      theme: ThemeData(
-        fontFamily: 'Poppins',
+    ChangeNotifierProvider<PlanStatsDateProvider>(
+      create: (_) => PlanStatsDateProvider(),
+      child: MaterialApp(
+        title: "Varzish",
+        theme: ThemeData(
+          fontFamily: 'Poppins',
+        ),
+        home: const MyWidget(),
+        routes: <String, WidgetBuilder>{
+          '/onboarding': (BuildContext context) => new Onboarding(),
+          '/loading': (BuildContext context) => new Loading(),
+          '/home': (BuildContext context) => new HomePage(),
+        },
       ),
-      home: const MyWidget(),
-      routes: <String, WidgetBuilder>{
-        '/onboarding': (BuildContext context) => new Onboarding(),
-        '/loading': (BuildContext context) => new Loading(),
-        '/home': (BuildContext context) => new HomePage(),
-        // '/exerciseList': (BuildContext context) => new ExeciseList(),
-      },
     ),
   );
 }
@@ -35,10 +41,18 @@ class _MyWidgetState extends State<MyWidget> with TickerProviderStateMixin {
   bool splash = true;
   late Animation<double> splashAnimation, onboardingAnimation;
   late AnimationController splashController, onboardingController;
+  late Userinfo? userinfo;
+  Future<void> getUser() async {
+    Userinfo? user = await getUserInfo();
+    setState(() {
+      userinfo = user;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-
+    getUser();
     splashController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 2500));
 
@@ -96,7 +110,8 @@ class _MyWidgetState extends State<MyWidget> with TickerProviderStateMixin {
               builder: (context, child) {
                 return Opacity(
                   opacity: onboardingAnimation.value,
-                  child: const Onboarding(),
+                  child:
+                      userinfo == null ? const Onboarding() : const HomePage(),
                 );
               },
             ),

@@ -1,6 +1,6 @@
 import 'package:varzish/models/plan.dart';
 
-const List<Plan> plan = [
+const List<Plan> planData = [
   Plan(
     dayNo: 1,
     completedPercentage: 0,
@@ -58,11 +58,11 @@ const List<Plan> plan = [
   Plan(
     dayNo: 7,
     completedPercentage: 0,
-    title: "Rest Day",
+    title: "Full Body Circuit",
     description:
-        "Allow your body to recover and prepare for the next week's challenges.",
-    calories: 0,
-    time: 0,
+        "A mix of cardio, strength, and core exercises for a comprehensive workout.",
+    calories: 500,
+    time: 30,
   ),
   Plan(
     dayNo: 8,
@@ -182,10 +182,10 @@ const List<Plan> plan = [
   Plan(
     dayNo: 21,
     completedPercentage: 0,
-    title: "Rest Day",
-    description: "Take a break to let your muscles repair and grow stronger.",
-    calories: 0,
-    time: 0,
+    title: "Recovery Day",
+    description: "Light stretching and active recovery to rejuvenate the body.",
+    calories: 100,
+    time: 10,
   ),
   Plan(
     dayNo: 22,

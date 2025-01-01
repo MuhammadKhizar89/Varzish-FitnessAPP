@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:varzish/local_storage/user_info.dart';
+import 'package:varzish/models/userInfo.dart';
 import 'package:varzish/utils/AppColors.dart';
 
 class AccountInfo extends StatefulWidget {
@@ -9,8 +11,29 @@ class AccountInfo extends StatefulWidget {
 }
 
 class _AccountInfoState extends State<AccountInfo> {
+  late Userinfo? userInfo = Userinfo(
+      Plan: "Beginner",
+      Height: "3'0",
+      Weight: 50,
+      age: DateTime.now().year - 1960);
+  Future<void> getUser() async {
+    Userinfo? user = await getUserInfo();
+    setState(() {
+      userInfo = user;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUser();
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (userInfo == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
     return Container(
       color: const Color.fromARGB(255, 223, 223, 223),
       padding: const EdgeInsets.all(15),
@@ -29,19 +52,22 @@ class _AccountInfoState extends State<AccountInfo> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  CustomLabel(Icons.paste_outlined, "Select Plan", "Beginner"),
+                  CustomLabel(
+                      Icons.paste_outlined, "Select Plan", userInfo!.Plan),
                   const Divider(),
-                  CustomLabel(Icons.cake, "Age", "21"),
+                  CustomLabel(Icons.cake, "Age", userInfo!.age),
                   const Divider(),
-                  CustomLabel(Icons.height, "Height", "2'0ft"),
+                  CustomLabel(Icons.height, "Height", "${userInfo!.Height} ft"),
                   const Divider(),
-                  CustomLabel(Icons.monitor_weight_outlined, "Weight", "78kg"),
+                  CustomLabel(Icons.monitor_weight_outlined, "Weight",
+                      "${userInfo!.Weight} kg"),
                 ],
               ),
             ),
           ),
           OutlinedButton(
             onPressed: () {
+              deleteUserInfoLocal();
               Navigator.of(context).pushNamedAndRemoveUntil(
                   '/onboarding', (Route<dynamic> route) => false);
             },
