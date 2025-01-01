@@ -11,13 +11,20 @@ class PlanStatsDateProvider extends ChangeNotifier {
   late double _planCompletion = 0.0;
   late int _todaysPlanDay = 0;
   late List<DateModel> _dateList = [];
+  late bool _isConfetti = false;
 
+  bool get isConfetti => _isConfetti;
   List<DateModel> get dateList => _dateList;
   List<Plan> get planList => _planList;
   int get totalCalories => _totalCalories;
   int get totalTime => _totalTime;
   double get planCompletion => _planCompletion;
   int get todaysPlanDay => _todaysPlanDay;
+
+  void setConfettiState(bool state) {
+    _isConfetti = state;
+    notifyListeners();
+  }
 
   void _calculateTodaysPlanDay() {
     _todaysPlanDay = 0;
@@ -49,10 +56,12 @@ class PlanStatsDateProvider extends ChangeNotifier {
   }
 
   Future<void> updatePlanList(
-      List<Plan> argPlanList, List<DateModel> argDateList) async {
+      List<Plan> argPlanList, List<DateModel>? argDateList) async {
     await savePlanLocal(argPlanList);
-    await saveDateLocal(argDateList);
-    _dateList = argDateList;
+    if (argDateList != null) {
+      await saveDateLocal(argDateList);
+      _dateList = argDateList;
+    }
     _planList = argPlanList;
     _totalCalories = 0;
     _totalTime = 0;

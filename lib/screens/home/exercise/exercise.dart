@@ -41,17 +41,27 @@ class _ExerciseState extends State<Exercise> {
           child: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Text(
+                    "Exercise Details",
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
                   InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(Icons.login_outlined,
-                        color: Colors.black, size: 20),
+                    onTap: () => Navigator.pop(context),
+                    child: const Icon(
+                      Icons.close,
+                      color: Colors.black,
+                      size: 28,
+                    ),
                   ),
                 ],
               ),
+              const SizedBox(height: 5),
               Text(
                 widget.exerciseData.name.toUpperCase().length > 38
                     ? widget.exerciseData.name.toUpperCase().substring(0, 25) +
@@ -105,60 +115,66 @@ class _ExerciseState extends State<Exercise> {
                     : const CircularProgressIndicator(),
               ),
               Expanded(
-                child: Column(
+                child: ListView(
                   children: [
                     ExerciseInfo(
-                        title: "🎯 Target: ",
-                        description: widget.exerciseData.target),
+                      title: "🎯 Target: ",
+                      description: widget.exerciseData.target,
+                    ),
                     ExerciseInfo(
-                        title: "🛠️ Equipment: ",
-                        description: widget.exerciseData.equipment),
+                      title: "🛠️ Equipment: ",
+                      description: widget.exerciseData.equipment,
+                    ),
                     ExerciseInfo(
-                        title: "💪 SecondaryMuscles: ",
-                        description:
-                            widget.exerciseData.secondaryMuscles[0] ?? ''),
+                      title: "💪 Secondary Muscles: ",
+                      description:
+                          widget.exerciseData.secondaryMuscles[0] ?? '',
+                    ),
                     ExerciseInfo(
-                        title: "👉 Body Part: ",
-                        description: widget.exerciseData.bodyPart),
+                      title: "👉 Body Part: ",
+                      description: widget.exerciseData.bodyPart,
+                    ),
+                    const SizedBox(height: 20),
                     const Text(
                       "Instructions",
                       style: TextStyle(
                         fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
+                        fontWeight: FontWeight.w800,
+                        color: Color.fromARGB(255, 0, 0, 0),
                       ),
                     ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: widget.exerciseData.instructions.length,
-                        itemBuilder: (context, index) {
-                          return Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "• ",
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.black),
+                    const SizedBox(height: 10),
+                    ...widget.exerciseData.instructions.map(
+                      (instruction) => Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "• ",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Color.fromARGB(255, 3, 3, 3),
                               ),
-                              Expanded(
-                                child: Text(
-                                  widget.exerciseData.instructions[index],
-                                  style: const TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.black54,
-                                  ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                instruction,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Color.fromARGB(179, 31, 30, 30),
                                 ),
                               ),
-                            ],
-                          );
-                        },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   OutlinedButton(
                     onPressed: () {
@@ -167,7 +183,7 @@ class _ExerciseState extends State<Exercise> {
                     style: OutlinedButton.styleFrom(
                       backgroundColor: AppColors.secondary,
                       padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 40),
+                          vertical: 5, horizontal: 35),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
@@ -195,7 +211,7 @@ class _ExerciseState extends State<Exercise> {
                     style: OutlinedButton.styleFrom(
                       backgroundColor: AppColors.secondary,
                       padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 40),
+                          vertical: 5, horizontal: 35),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),

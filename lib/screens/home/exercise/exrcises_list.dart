@@ -75,11 +75,15 @@ class _ExrcisesListState extends State<ExrcisesList> {
       isLoading = true;
     });
     List<Plan> planList = provider.planList;
-    List<DateModel> dateList = provider.dateList;
-    if (dateList.first.date.day == DateTime.now().day) {
-      dateList.removeAt(0);
+    List<DateModel>? dateList = provider.dateList;
+    if (index == 0) {
+      if (dateList.first.date.day == DateTime.now().day) {
+        dateList.removeAt(0);
+      }
+      dateList.insert(0, DateModel(date: DateTime.now(), isCompleted: true));
+    } else {
+      dateList = null;
     }
-    dateList.insert(0, DateModel(date: DateTime.now(), isCompleted: true));
     List<Plan> newList = planList.map((e) {
       if (e.dayNo == widget.dayNo) {
         return Plan(
@@ -96,6 +100,7 @@ class _ExrcisesListState extends State<ExrcisesList> {
     }).toList();
     await provider.updatePlanList(newList, dateList);
     if (index == exercises.length - 1) {
+      provider.setConfettiState(true);
       Navigator.pop(context);
       return;
     }
