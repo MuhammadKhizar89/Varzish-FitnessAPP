@@ -1,4 +1,4 @@
-Markdown# Varzish 🏃‍♂️
+# Varzish 🏃‍♂️
 
 Varzish is a small, simple exercise mobile app built with Flutter.  
 This is the **MVP version**.
@@ -25,3 +25,4 @@ git clone https://github.com/yourusername/varzish.git
 cd varzish
 flutter pub get
 flutter run
+
