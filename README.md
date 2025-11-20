@@ -21,9 +21,10 @@ This is a standard Flutter project.
 
 ### Run the app
 ```bash
-git clone https://github.com/yourusername/varzish.git
+git clone https://github.com/MuhammadKhizar89/Varzish-FitnessAPP.git
 cd varzish
 flutter pub get
 flutter run
+
 
 
